@@ -1,0 +1,9 @@
+django
+djangorestframework
+drf-yasg
+daphne
+python-decouple
+whitenoise
+channels
+twisted[http2,tls]
+channels_redis
