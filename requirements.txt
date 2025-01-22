@@ -8,3 +8,4 @@ channels
 twisted[http2,tls]
 channels_redis
 MetaTrader5 
+numpy
