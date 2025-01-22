@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -51,15 +52,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 ASGI_APPLICATION = 'config.asgi.application'
-
+# future TODO: # for production, use the Redis service name from docker-compose by setting hosts in the following as follows:
+# 'hosts': [('redis', 6379)],  
 CHANNEL_LAYERS = {
-'default': {
-'BACKEND': 'channels_redis.core.RedisChannelLayer',
-'CONFIG': {
-"hosts": [('127.0.0.1', 6379)],
-},
-},
-}
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            'hosts': [('127.0.0.1', 6379)], 
+            },
+        },
+    }
 
 DATABASES = {
     'default': {
@@ -91,19 +93,20 @@ USE_I18N = True
 
 USE_TZ = True
 
-STATIC_URL = 'static/'
 
+
+
+
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-STATICFILES_DIRS = [BASE_DIR / 'static']
-
-ASGI_APPLICATION = 'config.asgi.application'
-
-CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels.layers.InMemoryChannelLayer',
-    },
-}
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SECURE_SSL_REDIRECT = False 
