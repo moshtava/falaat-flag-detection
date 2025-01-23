@@ -1,6 +1,10 @@
 ```markdown
 # WebSocket API for Flag Pattern Detection in EUR/USD Chart (MetaTrader5)
 
+*Dear Reviewer,
+
+I created and later removed the Dockerfile and Docker Compose files. Last night, I discovered that the MetaTrader5 package is not available for non-Windows platforms. Since using Windows images seemed impractical, I decided to remove the Dockerization scripts and files. You can review the two scripts in the comment with ID 0a485b37a7e949865b51c01596c7751c13b8ac32.*
+
 This project is a WebSocket-based API built using Django and Django Channels. The API detects flag patterns in EUR/USD price data retrieved from MetaTrader5 (MT5) and provides real-time updates via WebSocket.
 
 The goal is to detect professional-grade flag patterns in the EUR/USD currency pair and notify clients with flag pattern details when detected.
