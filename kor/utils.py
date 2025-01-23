@@ -1,6 +1,5 @@
 import MetaTrader5 as mt5
 import pandas as pd
-import numpy as np
 import logging
 from decouple import config
 
@@ -88,27 +87,22 @@ def validate_data(data, required_columns, min_rows=50):
 def detect_flagpole(data, start_idx, end_idx, threshold=0.02):
     """
     Detects the flagpole in the data.
-    
+
     Parameters:
         data (pd.DataFrame): Input data with a 'close' column.
         start_idx (int): Start index of the flagpole window.
         end_idx (int): End index of the flagpole window.
         threshold (float): Percentage change threshold for a sharp move.
-    
+
     Returns:
         bool: True if a flagpole is detected, False otherwise.
     """
-    if start_idx < 0 or end_idx < 0 or start_idx >= len(data) or end_idx >= len(data):
-        raise ValueError(f"Invalid indices for flagpole detection: start_idx={start_idx}, end_idx={end_idx}")
+    if start_idx < 0 or end_idx > len(data) or start_idx >= end_idx:
+        raise ValueError(f"Invalid indices: start_idx={start_idx}, end_idx={end_idx}")
+    flagpole_window = data['close'].iloc[start_idx:end_idx]
+    percentage_change = (flagpole_window.iloc[-1] - flagpole_window.iloc[0]) / flagpole_window.iloc[0]
 
-    flagpole_window = data['close'].iloc[start_idx:end_idx + 1]
-    pct_changes = flagpole_window.pct_change().dropna()
-
-    if len(pct_changes) < 2:
-        raise ValueError(f"Insufficient data points for percentage change calculation. Need at least 2 data points in the window.")
-
-    flagpole_returns = pct_changes.abs()
-    return (flagpole_returns > threshold).all()
+    return percentage_change > threshold
 
 
 def detect_consolidation(data, start_idx, end_idx, threshold=0.01):
