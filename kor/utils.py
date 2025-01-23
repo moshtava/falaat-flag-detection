@@ -98,8 +98,11 @@ def detect_flagpole(data, start_idx, end_idx, threshold=0.02):
     Returns:
         bool: True if a flagpole is detected, False otherwise.
     """
+    # Calculate percentage changes
     data['returns'] = data['close'].pct_change()
-    return (data['returns'].iloc[start_idx:end_idx] > threshold).all()
+    
+    # Check if all percentage changes in the window exceed the threshold
+    return (data['returns'].iloc[start_idx:end_idx].abs() > threshold).all()
 
 
 def detect_consolidation(data, start_idx, end_idx, threshold=0.01):
@@ -134,7 +137,8 @@ def detect_breakout(data, start_idx, threshold=0.03):
         bool: True if a breakout is detected, False otherwise.
     """
     breakout_window = data['close'].iloc[start_idx:]
-    return breakout_window.pct_change().sum() > threshold
+    cumulative_change = (breakout_window.iloc[-1] - breakout_window.iloc[0]) / breakout_window.iloc[0]
+    return cumulative_change > threshold
 
 
 def detect_flag_pattern(data):
@@ -149,12 +153,15 @@ def detect_flag_pattern(data):
     """
     required_columns = {'time', 'close'}
     validate_data(data, required_columns)
+    
     flagpole_start, flagpole_end = -30, -20
     consolidation_start, consolidation_end = -20, -5
     breakout_start = -5
+    
     is_flagpole = detect_flagpole(data, flagpole_start, flagpole_end)
     is_consolidation = detect_consolidation(data, consolidation_start, consolidation_end)
     is_breakout = detect_breakout(data, breakout_start)
+    
     if is_flagpole and is_consolidation and is_breakout:
         return {
             "time": data.iloc[-1]['time'],
@@ -167,5 +174,5 @@ def detect_flag_pattern(data):
                 "breakout_start_time": data.iloc[breakout_start]['time'],
             }
         }
-
+    
     return None
