@@ -215,10 +215,3 @@ Feel free to open issues or submit pull requests for improvements, bug fixes, or
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 ```
-
-### Key Updates:
-1. **.env File**: Detailed `.env` configuration for your project, including MetaTrader5 account credentials and Django settings.
-2. **Installation Instructions**: Updated with `.env` configuration and the necessary steps to run the project.
-3. **Usage**: Clarified WebSocket message structure and example client.
-4. **Testing**: Added instructions for unit testing and WebSocket tests.
-5. **Docker**: Added detailed steps for deploying with Docker. 
