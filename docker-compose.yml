@@ -7,10 +7,11 @@ services:
       dockerfile: dockerfile
       args:
         USERNAME: ${USERNAME}
-        EMAIL: ${EMAIL}
+        USER_UID: ${USER_UID}
+        USER_GID: ${USER_GID}
     container_name: flag-detection-container
     environment:
-      PYTHONUNBUFFERED: 1
+      PYTHONUNBUFFERED: ${PYTHONUNBUFFERED}
       DJANGO_SETTINGS_MODULE: config.settings
       MT5_ACCOUNT: ${MT5_ACCOUNT}
       MT5_PASSWORD: ${MT5_PASSWORD}
@@ -20,7 +21,7 @@ services:
     env_file:
       - .env
     volumes:
-      - .:/app  
+      - .:/workspace
     command: >
       sh -c "python manage.py makemigrations &&
              python manage.py migrate &&
