@@ -10,7 +10,7 @@ MT5_ACCOUNT = config('MT5_ACCOUNT')
 MT5_PASSWORD = config('MT5_PASSWORD')
 MT5_SERVER = config('MT5_SERVER')
 MT5_INVESTOR_PASSWORD = config('MT5_INVESTOR_PASSWORD')
-ALLOWED_HOSTS = config('ALLOWED_HOSTS')
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=lambda v: [s.strip() for s in v.split(',')])
 
 INSTALLED_APPS = [
     'django.contrib.admin',
