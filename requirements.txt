@@ -9,3 +9,6 @@ twisted[http2,tls]
 channels_redis
 MetaTrader5 
 numpy
+pytest 
+pytest-asyncio 
+mock
