@@ -10,10 +10,18 @@ services:
         EMAIL: ${EMAIL}
     container_name: flag-detection-container
     environment:
-      PYTHONUNBUFFERED: ${PYTHONUNBUFFERED}
-      DOMAIN_NAME: ${DOMAIN_NAME}
+      PYTHONUNBUFFERED: 1
+      DJANGO_SETTINGS_MODULE: config.settings
+      MT5_ACCOUNT: ${MT5_ACCOUNT}
+      MT5_PASSWORD: ${MT5_PASSWORD}
+      MT5_SERVER: ${MT5_SERVER}
     ports:
-      - "8080:80"
-      - "8443:443"
+      - "8000:8000"  # Single port for both HTTP and ASGI
     env_file:
       - .env
+    volumes:
+      - .:/app  
+    command: >
+      sh -c "python manage.py makemigrations &&
+             python manage.py migrate &&
+             daphne -b 0.0.0.0 -p 8000 config.asgi:application"
