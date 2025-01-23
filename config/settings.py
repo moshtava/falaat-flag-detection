@@ -6,7 +6,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('DJANGO_SECRET_KEY')
 
 DEBUG = config('DEBUG')
-
+MT5_ACCOUNT = config('MT5_ACCOUNT')
+MT5_PASSWORD = config('MT5_PASSWORD')
+MT5_SERVER = config('MT5_SERVER')
+MT5_INVESTOR_PASSWORD = config('MT5_INVESTOR_PASSWORD')
 ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
