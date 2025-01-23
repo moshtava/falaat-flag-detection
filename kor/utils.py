@@ -98,11 +98,17 @@ def detect_flagpole(data, start_idx, end_idx, threshold=0.02):
     Returns:
         bool: True if a flagpole is detected, False otherwise.
     """
-    # Calculate percentage changes
-    data['returns'] = data['close'].pct_change()
-    
-    # Check if all percentage changes in the window exceed the threshold
-    return (data['returns'].iloc[start_idx:end_idx].abs() > threshold).all()
+    if start_idx < 0 or end_idx < 0 or start_idx >= len(data) or end_idx >= len(data):
+        raise ValueError(f"Invalid indices for flagpole detection: start_idx={start_idx}, end_idx={end_idx}")
+
+    flagpole_window = data['close'].iloc[start_idx:end_idx + 1]
+    pct_changes = flagpole_window.pct_change().dropna()
+
+    if len(pct_changes) < 2:
+        raise ValueError(f"Insufficient data points for percentage change calculation. Need at least 2 data points in the window.")
+
+    flagpole_returns = pct_changes.abs()
+    return (flagpole_returns > threshold).all()
 
 
 def detect_consolidation(data, start_idx, end_idx, threshold=0.01):
@@ -144,7 +150,7 @@ def detect_breakout(data, start_idx, threshold=0.03):
 def detect_flag_pattern(data):
     """
     Detects a professional-grade flag pattern in financial data.
-    
+
     Parameters:
         data (pd.DataFrame): DataFrame containing at least the 'close' price column.
     
